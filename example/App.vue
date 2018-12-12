@@ -1,27 +1,35 @@
 <template>
   <div id="app">
-    <UnsplashTest/>
+    <Gallery/>
   </div>
 </template>
 
 <script>
-import UnsplashTest from './components/UnsplashTest'
+import Gallery from './Gallery'
 
 export default {
   name: 'app',
   components: {
-    UnsplashTest
+    Gallery
   }
 }
 </script>
 
 <style>
+*, *:after, *:before {
+  box-sizing: content-box;
+}
+
+html, body {
+  margin: 0;
+  background-color: #ddd;
+}
+
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 }
 </style>

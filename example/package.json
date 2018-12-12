@@ -1,0 +1,10 @@
+{
+  "name": "example",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint-plugin-vue": "^5.0.0",
+    "@babel/preset-env": "^7.1.0"
+  }
+}
