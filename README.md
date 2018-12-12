@@ -7,3 +7,4 @@
 - [ ] tests
 - [ ] readme
 - [ ] track download
+- [ ] remove axios
