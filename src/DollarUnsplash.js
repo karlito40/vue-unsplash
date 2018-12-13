@@ -1,9 +1,9 @@
 import { debounce } from 'lodash-es';
 import API from './API';
-import * as ResponseFormatter from './formatter';
+import * as murations from './mutations';
 import assert from 'assert';
 
-const AVAILABLE_TYPES = Object.keys(ResponseFormatter);
+const AVAILABLE_TYPES = Object.keys(murations);
 
 export default class DollarUnsplash {
   constructor(vm, options) {
@@ -80,14 +80,14 @@ export default class DollarUnsplash {
         }
       }));
 
-      this.vm[varName] = ResponseFormatter[type].call(this.vm, {
+      this.vm[varName] = murations[type].call(this.vm, {
         result,
         target: varName,
         change: {
           newVal: {}, 
           oldVal: {},
         }, 
-        previousState: this.vm[varName],
+        state: this.vm[varName],
         placeholder
       });
     }
@@ -113,14 +113,14 @@ export default class DollarUnsplash {
 
     this.vm.unsplash[varName].loading = false;
 
-    return this.vm[varName] = ResponseFormatter[targetType].call(this.vm, {
+    return this.vm[varName] = murations[targetType].call(this.vm, {
       result,
       target: varName,
       change: {
         newVal, 
         oldVal,
-      }, 
-      previousState: this.vm[varName]
+      },
+      state: this.vm[varName]
     });
   }
 

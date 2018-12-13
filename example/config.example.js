@@ -1,0 +1,1 @@
+export const ACCESS_KEY = 'YOUR_ACCESS_KEY';

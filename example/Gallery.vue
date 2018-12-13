@@ -4,7 +4,6 @@
       <button class="btn btn-more" @click="$unsplash.nextPage('photos')">Show More</button>
       <form @submit.prevent="">
         <input v-model="unsplash.photos.search" type="text" placeholder="Search..." class="input">
-        <button class="btn btn-more">Search More</button>
       </form>
     </div>
     

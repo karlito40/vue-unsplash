@@ -1,7 +1,7 @@
 import { uniqBy, remove } from 'lodash-es';
 
-export function concat({result, change, previousState, placeholder}) {
-  const oldData = (!change.oldVal || change.oldVal.search === change.newVal.search) ? previousState : [];
+export function concat({result, change, state, placeholder}) {
+  const oldData = (!change.oldVal || change.oldVal.search === change.newVal.search) ? state : [];
   
   if(!placeholder) {
     remove(oldData, (e) => e.placeholder);
@@ -18,5 +18,5 @@ export function fetch({ result }) {
 }
 
 export function custom(data) {
-  return this.$unsplash.getOptions(data.target).updateQuery(data);
+  return this.$unsplash.getOptions(data.target).mutation(data);
 }
