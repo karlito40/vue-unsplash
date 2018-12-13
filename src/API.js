@@ -1,10 +1,8 @@
-import axios from 'axios';
-
 const DEFAULT_API = 'https://api.unsplash.com';
 
 export default class API {
-  constructor({ accessKey, apiUrl }) {
-    this.http = axios.create({
+  constructor({ accessKey, apiUrl, httpClient }) {
+    this.http = httpClient.create({
       baseURL: apiUrl || DEFAULT_API,
       headers: {
         'Authorization': `Client-ID ${accessKey}`
