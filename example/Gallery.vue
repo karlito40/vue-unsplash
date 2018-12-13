@@ -8,7 +8,8 @@
     </div>
     
     <div class="photo-list">
-      <a :key="photo.id" v-for="photo in photos" :href="photo.links.download + '?force=true'">
+      <!-- <a :key="photo.id" v-for="photo in photos" :href="photo.links.download + '?force=true'"> -->
+      <a :key="photo.id" v-for="photo in photos" @click="download(photo)">
         <figure>
           <img  v-if="!photo.placeholder" class="img" :src="photo.urls.regular">
           <div v-else class="placeholder" :style="getPlaceholderStyle()"></div>
@@ -33,6 +34,10 @@ export default {
       return {
         height: ~~rand(150, 350) + 'px'
       }
+    },
+    download(photo) {
+      this.$unsplash.api.ping(photo.links.download_location);
+      // ourApi.download(photo.urls.full)
     }
   }
   

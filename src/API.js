@@ -11,15 +11,19 @@ export default class API {
   }
 
   async getResource(resource, params = {}) {
-    let queryString = Object.entries(params)
-      .map(([key, value]) => key + '=' + value)
-      .join('&');
+    // let queryString = Object.entries(params)
+    //   .map(([key, value]) => key + '=' + value)
+    //   .join('&');
   
-    queryString = queryString && '?' + queryString;
+    // queryString = queryString && '?' + queryString;
   
-    const route = resource + queryString;
-    const { data } = await this.http.get(route);
-  
+    // const route = resource + queryString;
+    // const { data } = await this.http.get(route);
+    const { data } = await this.http.get(resource, { params });
     return data && data.results ? data.results : data;
+  }
+
+  ping(link) {
+    return this.http.get(link);
   }
 }
