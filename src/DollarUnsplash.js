@@ -1,9 +1,9 @@
 import { debounce } from 'lodash-es';
 import API from './API';
-import * as murations from './mutations';
+import * as mutations from './mutations';
 import assert from 'assert';
 
-const AVAILABLE_TYPES = Object.keys(murations);
+const AVAILABLE_TYPES = Object.keys(mutations);
 
 export default class DollarUnsplash {
   constructor(vm, options) {
@@ -15,24 +15,26 @@ export default class DollarUnsplash {
   createData() {
     const data = { unsplash: {} };
 
-    return Object.entries(this.getOptions()).reduce((acc, [varName, varOptions]) => {``
-      if(process.env.NODE_ENV === 'development') {
-        assert.ok(
-          AVAILABLE_TYPES.includes(varOptions.type),
-          `Unknow type ${varOptions.type} for unsplash query ${varName} [available types: ${AVAILABLE_TYPES}]`
-        );
-      }
+    return Object.entries(this.getOptions())
+      .reduce((acc, [varName, varOptions]) => {
+        if(process.env.NODE_ENV === 'development') {
+          assert.ok(
+            AVAILABLE_TYPES.includes(varOptions.type),
+            `Unknow type ${varOptions.type} for unsplash query ${varName} [available types: ${AVAILABLE_TYPES}]`
+          );
+        }
 
-      acc[varName] = [];
-      acc.unsplash[varName] = {
-        errors: null,
-        loading: false,
-        page: 1,
-        search: ''
-      };
+        acc[varName] = [];
+        acc.unsplash[varName] = {
+          errors: null,
+          loading: false,
+          page: 1,
+          hasMore: true,
+          search: ''
+        };
 
-      return acc;
-    }, data)
+        return acc;
+      }, data)
   }
 
   addQuery(varName) {
@@ -80,7 +82,7 @@ export default class DollarUnsplash {
         }
       }));
 
-      this.vm[varName] = murations[type].call(this.vm, {
+      this.vm[varName] = mutations[type].call(this.vm, {
         result,
         target: varName,
         change: {
@@ -113,7 +115,16 @@ export default class DollarUnsplash {
 
     this.vm.unsplash[varName].loading = false;
 
-    return this.vm[varName] = murations[targetType].call(this.vm, {
+    if (result.errors) {
+      this.vm.unsplash[varName].hasMore = false;
+      this.vm.unsplash[varName].errors = result.errors;
+      return;
+    }
+
+    this.vm.unsplash[varName].errors = null;
+    this.vm.unsplash[varName].hasMore = !!result.length;
+
+    this.vm[varName] = mutations[targetType].call(this.vm, {
       result,
       target: varName,
       change: {
