@@ -42,6 +42,7 @@ Exemple d’utilisation simple (1)
   </div>
 </template>
 
+<script>
 export default {
   data: {},
   unsplash: {
@@ -58,8 +59,8 @@ export default {
       }
     }
   }
-
 }
+</script>
 ```
 On peut surcharger la méthode de récupération des données.
 
