@@ -16,7 +16,7 @@ Vue.use(VueUnsplash, {
 ```
 
 Exemple d’utilisation simple (1)
-``` javascript
+``` html
 <template>
   <div class="gallery">
     <div class="api">
