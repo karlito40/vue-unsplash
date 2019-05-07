@@ -17,7 +17,7 @@ export default class DollarUnsplash {
 
     return Object.entries(this.getOptions())
       .reduce((acc, [varName, varOptions]) => {
-        if(process.env.NODE_ENV === 'development') {
+        if (process.env.NODE_ENV === 'development') {
           assert.ok(
             AVAILABLE_TYPES.includes(varOptions.type),
             `Unknow type ${varOptions.type} for unsplash query ${varName} [available types: ${AVAILABLE_TYPES}]`
@@ -38,8 +38,9 @@ export default class DollarUnsplash {
   }
 
   addQuery(varName) {
-    if(!this.getOptions(varName).query) {
-      this.getOptions(varName).query = () => {
+    let { query } = this.getOptions(varName);
+    if (!query) {
+      query = () => {
         const { page, search } = this.vm.unsplash[varName];
 
         return {
@@ -47,26 +48,25 @@ export default class DollarUnsplash {
           page,
           search,
           wait: search && page === 1 ? 250 : 0
-        }
-      }
+        };
+      };
     }
-  
-    const { query } = this.getOptions(varName);
+
     this.vm.$watch(query, this.executeQuery.bind(this, varName), { immediate: true })
   }
 
   executeQuery(varName, newVal, oldVal) {
-    if(!oldVal || oldVal.wait !== newVal.wait) {
+    if (!oldVal || oldVal.wait !== newVal.wait) {
       this.registerDebounce(varName, this.onQueryChange.bind(this), newVal.wait)
     }
 
-    if(oldVal && oldVal.search !== newVal.search) {
+    if (oldVal && oldVal.search !== newVal.search) {
       this.vm.unsplash[varName].page = 1;
     }
 
     const { type, placeholder } = this.getOptions(varName);
 
-    if(placeholder) {
+    if (placeholder) {
       const varSize = this.vm[varName].length;
       const result = Array.from(Array(15), (v, i) => ({
         id: varSize + '-' + i,
@@ -86,29 +86,29 @@ export default class DollarUnsplash {
         result,
         target: varName,
         change: {
-          newVal: {}, 
+          newVal: {},
           oldVal: {},
-        }, 
+        },
         state: this.vm[varName],
         placeholder
       });
     }
 
     this.vm.unsplash[varName].loading = true;
-  
+
     this.executeDebounce(varName, newVal, oldVal)
   }
 
   async onQueryChange(varName, newVal, oldVal) {
     const { page, skip, search } = newVal;
-    if(skip) {
+    if (skip) {
       return;
     }
-    
+
     const targetType = this.getType(varName);
     const resource = !search ? '/photos' : '/search/photos';
-  
-    const result = await this.api.getResource(resource, { 
+
+    const result = await this.api.getResource(resource, {
       page,
       ...search && { query: search },
     });
@@ -128,7 +128,7 @@ export default class DollarUnsplash {
       result,
       target: varName,
       change: {
-        newVal, 
+        newVal,
         oldVal,
       },
       state: this.vm[varName]
@@ -152,7 +152,7 @@ export default class DollarUnsplash {
   }
 
   executeDebounce(varName, newVal, oldVal) {
-    if(this.debounce[varName]) {
+    if (this.debounce[varName]) {
       this.debounce[varName](varName, newVal, oldVal);
     }
   }
